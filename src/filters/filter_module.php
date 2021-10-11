@@ -16,6 +16,7 @@ class filter_module
     public function filter_code($organism)
     {
         if (empty($organism['enabled'])){ return; }
+        
         if ($organism['acf_fc_layout'] != 'epicslider'){ return; }
 
         $epicslider = new init;

@@ -2,7 +2,7 @@
 /*
 Plugin Name: _ANDYP - Page Builder - Epic Slider
 Plugin URI: http://londonparkour.com
-Description: <em>Page Builder - Epic Slider - built to look like slider on https://www.epicgames.com/store/en-US/</em>
+Description: <em>Page Builder - Epic Slider - Uses Flickity and built to look like slider on https://www.epicgames.com/store/en-US/</em>
 Version: 1.0
 Author: Andy Pearson
 Author URI: http://londonparkour.com
