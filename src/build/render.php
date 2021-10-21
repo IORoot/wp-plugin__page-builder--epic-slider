@@ -2,97 +2,9 @@
 
 namespace andyp\pagebuilder\epicslider\build;
 
-use andyp\pagebuilder\epicslider\build\render;
-
-class init {
-
-    private $config;
-
-    private $query_results;
-
-    private $render;
-    
-    private $result;
-
-
-    public function __construct(){
-        $this->render = new render();
-    }
-
-    public function set_config($config){
-        $this->config = $config;
-    }
-
-    public function get_result(){
-        return $this->result;
-    }
-
-    public function run(){
-        $this->create_content();
-    }
-
-    
-    private function create_content(){
-
-        $this->query();
-
-        $this->query_metadata();
-
-        $this->open_epicslider();
-
-        $this->css_stylesheet();
-
-        $this->add_css();
-
-        $this->open_carousel();
-
-        $this->main_content();
-
-        $this->add_navigation();
-
-        $this->close_carousel();
-
-        $this->add_javascript();
-
-        $this->js_script();
+class render
+{
         
-        $this->close_epicslider();
-    }
-    
-    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
-    *   │                                                                         │░
-    *   │                               Query the DB.                             │░
-    *   │                                                                         │░
-    *   └─────────────────────────────────────────────────────────────────────────┘░
-    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    */
-    private function query()
-    {
-        if (empty($this->config['wp_query'])){ return; }
-
-        $post_query = $this->config['wp_query'];
-
-        $args = eval("return $post_query;");
-
-        $this->query_results = get_posts($args);
-    }
-
-    /**
-     * get each results metadata as well
-     */
-    private function query_metadata()
-    {
-
-        if (empty($this->query_results)){ return; }
-
-        foreach ($this->query_results as $key => $WP_Post) {
-            $this->query_results[$key] = [];
-            $this->query_results[$key]['post'] = $WP_Post;
-            $this->query_results[$key]['meta'] = get_metadata('post', $WP_Post->ID);
-        }
-    }
-
-            
     /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
     *   │                                                                         │░
     *   │                         The complete wrapper                            │░
@@ -102,13 +14,12 @@ class init {
     */
 
     public function open_epicslider(){
-        $this->result .= $this->render->open_epicslider();
+        return '<div class="epicslider">';
     }
 
     public function close_epicslider(){
-        $this->result .= $this->render->close_epicslider();
+        return '</div>';
     }
-
 
     /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
     *   │                                                                         │░
@@ -118,120 +29,134 @@ class init {
     *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     */
 
-    private function open_carousel(){
-        $this->result .= $this->render->open_carousel();
+    public function open_carousel(){
+        return '<div class="carousel flex gap-x-4 m-4">';
     }
 
-    private function close_carousel(){
-        $this->result .= $this->render->close_carousel();
+    public function close_carousel(){
+        return '</div>';
     }
+
+    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+    *   │                                                                         │░
+    *   │                               Flickity Main.                            │░
+    *   │                                                                         │░
+    *   └─────────────────────────────────────────────────────────────────────────┘░
+    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    */
+
+    public function open_flickity_main(){
+        return '<div class="w-full h-192" id="flickity-main" data-flickity>';
+    }
+
+    public function close_flickity_main(){
+        return '</div>';
+    }
+
+
+    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+    *   │                                                                         │░
+    *   │                               Carousel Cell.                            │░
+    *   │                                                                         │░
+    *   └─────────────────────────────────────────────────────────────────────────┘░
+    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    */
+
+    public function open_carousel_cell(){
+        return '<div class="carousel-cell w-full h-192"><div class="relative z-0 h-192 bg-smoke">';
+    }
+
+    public function close_carousel_cell(){
+        return '</div></div>';
+    }
+
+
+    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+    *   │                                                                         │░
+    *   │                    Navigation Buttons. (wrapper)                        │░
+    *   │                                                                         │░
+    *   └─────────────────────────────────────────────────────────────────────────┘░
+    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    */
+
+    public function open_flickity_control(){
+        return '<div class="hidden md:flex w-1/5 h-192 gap-4 flex-col" id="flickity-control">';
+    }
+
+    public function close_flickity_control(){
+        return '</div>';
+    }
+
+    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+    *   │                                                                         │░
+    *   │                             Navigation Item.                            │░
+    *   │                                                                         │░
+    *   └─────────────────────────────────────────────────────────────────────────┘░
+    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    */
+
+    public function open_nav_item(){
+        return '<div class="nav-item p-4 overflow-hidden rounded cursor-pointer relative flex-grow bg-mist hover:bg-smoke z-0">';
+    }
+
+    public function close_nav_item(){
+        return '</div>';
+    }        
     
-
+    
     /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
     *   │                                                                         │░
-    *   │                          Flickity Container.                            │░
+    *   │                         Navigation Item Content.                        │░
     *   │                                                                         │░
     *   └─────────────────────────────────────────────────────────────────────────┘░
     *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     */
-    private function main_content(){
 
-        if ( empty($this->query_results)) {
-            return;
-        }
-
-        $content = $this->render->open_flickity_main();
-
-        foreach ($this->query_results as $loop_key => $loop_post)
-        {
-            $content .= $this->render->open_carousel_cell();
-            $content .= $loop_post["meta"]["builder_instance_0_organism_0_raw_code"][0];
-            $content .= $this->render->close_carousel_cell();
-        }
-
-        $content .= $this->render->close_flickity_main();
-
-        $this->result .= $content;
-
+    public function open_nav_item_content(){
+        return '<div class="item-content pointer-events-none flex items-center h-full gap-4">';
     }
 
-
+    public function close_nav_item_content(){
+        return '</div>';
+    }       
+    
+    
     /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
     *   │                                                                         │░
-    *   │                           Navigation Buttons.                           │░
+    *   │                               Item Image.                               │░
     *   │                                                                         │░
     *   └─────────────────────────────────────────────────────────────────────────┘░
     *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     */
-    private function add_navigation(){
-        
-        $content .= $this->render->open_flickity_control();
 
-        foreach ($this->query_results as $loop_key => $loop_post) {
+    public function item_image(string $image){
+        return '<img class="rounded w-1/3 object-cover h-full z-10 relative pointer-events-none hidden lg:block" src="'.$image.'"></img>';
+    }    
 
-            $image = get_the_post_thumbnail_url($loop_post["post"]->ID);
-            $title = $loop_post["post"]->post_title;
 
-            $content .= $this->render->open_nav_item();
+    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+    *   │                                                                         │░
+    *   │                               Item Title.                               │░
+    *   │                                                                         │░
+    *   └─────────────────────────────────────────────────────────────────────────┘░
+    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    */
 
-            $content .= $this->render->open_nav_item_content();
-
-            $content .= $this->render->item_image($image);
-
-            $content .= $this->render->item_title($title);
-
-            $content .= $this->render->close_nav_item_content();
-
-            $content .= $this->render->progress_bar();
-
-            $content .= $this->render->close_nav_item();
-        }
-
-        $content .= $this->render->close_flickity_control();
-
-        $this->result .= $content;
+    public function item_title(string $title){
+        return '<h3 class="relative z-10 font-normal text-lg">'.$title.'</h3>';
     }
 
 
     /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
     *   │                                                                         │░
-    *   │                             Include The CSS.                            │░
+    *   │                               Progress Bar.                             │░
     *   │                                                                         │░
     *   └─────────────────────────────────────────────────────────────────────────┘░
     *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     */
-    private function css_stylesheet()
-    {   
-        $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/epicslider.css">';
-        $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.css">';
+
+    public function progress_bar(){
+        return '<div class="progress"></div>';
     }
-
-    private function add_css()
-    {
-        $this->result .= $this->config['additional_css'];
-    }
-
-
-    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
-    *   │                                                                         │░
-    *   │                              Include The JS.                            │░
-    *   │                                                                         │░
-    *   └─────────────────────────────────────────────────────────────────────────┘░
-    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    */
-    private function js_script()
-    {
-        $this->result .= '<script src="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.js"></script>';
-        $this->result .= '<script src="'.ANDYP_EPICSLIDER_URL . 'src/assets/epicslider.js"></script>';
-    }
-
-
-    private function add_javascript()
-    {
-        add_action('page_builder_footer_code', function (){
-            echo $this->config['additional_js'];
-        });
-    }
-
 
 }
