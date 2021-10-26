@@ -1,15 +1,6 @@
 (function(){
 
 
-    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
-    *   │                                                                         │░
-    *   │                               MEDIA QUERIES.                            │░
-    *   │                                                                         │░
-    *   └─────────────────────────────────────────────────────────────────────────┘░
-    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    */
-
-
     // Flickity options, defaults
     var options = {
         // settings
@@ -17,7 +8,7 @@
         wrapAround:true,
         autoPlay:false,
         pageDots: true,
-        adaptiveHeight: true,
+        adaptiveHeight: false,
         fade: true,
 
 
@@ -26,9 +17,7 @@
             // when ready
             ready: function() {
                 // play video 1.
-				videos[0].play();
-				videos[0].style.objectFit = "cover";
-				runProgressBar(0);
+                changeSlide(0);
             }
         }
     };
@@ -41,12 +30,13 @@
     *   └─────────────────────────────────────────────────────────────────────────┘░
     *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     */
+        const waittime = 3;
 
-    var buttonGroup = document.getElementById('flickity-control');
+        var buttonGroup = document.getElementById('flickity-control');
 
-    var buttons = buttonGroup.querySelectorAll('.nav-item');
+        var buttons = buttonGroup.querySelectorAll('.nav-item');
 
-    buttons = fizzyUIUtils.makeArray( buttons );
+        buttons = fizzyUIUtils.makeArray( buttons );
 
 
     /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
@@ -70,84 +60,133 @@
         // Create a new flickity instance
         const flickity = new Flickity(target, options);
 
-        // Loop number of videos in array and add event listeners
+        // One-time : Loop number of videos in array and add event listeners
         for(let i = 0;i < videosLength; i++){
-			
-            // Wait for the video metadata to be loaded
+
+            /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+            *   │                     [EVENTLISTENER]: Metadata Load                      │
+            *   └─────────────────────────────────────────────────────────────────────────┘ */
             videos[i].addEventListener('loadedmetadata',function(){
-                // console output the video duration
-                console.log("Video Duration_" + i + " : "+ videos[i].duration);
+                // console.log("Video Duration_" + i + " : "+ videos[i].duration);
             },false);
             
-            // add listener to end of the video...
+            /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+            *   │                        [EVENTLISTENER]: Video Ended                     │
+            *   └─────────────────────────────────────────────────────────────────────────┘ */
             videos[i].addEventListener('ended',function(){
-
-                // switch flickity to the next slide.
-                flickity.next('true');
+                flickity.next('true');                // switch flickity to the next slide.
             },false);
 
         }
 
-        // If there is a flickity change, run the changeSlide function.
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │          [EVENTLISTENER]: on Change, run changeSlide function.          │
+        *   └─────────────────────────────────────────────────────────────────────────┘ */
         flickity.on('change',changeSlide);
 
-        // play the video when the slide changes.
-        function changeSlide(index) {
 
-            // loop number of videos (3)
+
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │                                                                         │░
+        *   │                           Change the slide.                             │░
+        *   │                                                                         │░
+        *   └─────────────────────────────────────────────────────────────────────────┘░
+        *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+        */
+        // play the video (INDEX)
+        async function changeSlide(index) {
+
+            // reset the videos back to the start
             for(let i = 0;i < videosLength; i++){
-				
-				//default is 'contain' for the poster image. switch back to cover.
-				videos[i].style.objectFit = "cover";
-
-				// reset the video back to the start
-				videos[i].currentTime = 0;
-
-				// play it!
-				videos[index].play();
+                videos[i].style.objectFit = "contain";
+                // remove-then-add-back source to see the poster image again
+                var source = videos[i].src;
+                videos[i].src = ''; 
+                videos[i].removeAttribute('src');
+                // reset time
+                videos[i].currentTime = 0;
+                videos[i].pause();
             }
-			
-			runProgressBar(index, videos[index].duration);
-           
+
+            // set video duration
+            var duration=12;
+            if (index in videos) { 
+                duration = videos[index].duration; 
+            }
+
+            // run progress bar
+            runProgressBar(index, duration + waittime);
+            
+            // sleep
+            await sleep(waittime*1000);
+
+            // play video
+			if (index in videos) { 
+                playVideo(index); 
+            } else {
+                await sleep(10000);
+                flickity.next('true');
+            }
+
+        }
+
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │                                                                         │░
+        *   │                           CONTROLLER CAROUSEL.                          │░
+        *   │                        (after flickity declared).                       │░
+        *   │                                                                         │░
+        *   └─────────────────────────────────────────────────────────────────────────┘░
+        *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+        */
+
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │          [EVENTLISTENER]: on Click, Select flickity slide.              │
+        *   └─────────────────────────────────────────────────────────────────────────┘ */
+        buttonGroup.addEventListener( 'click', function( event ) {
+            var index = buttons.indexOf( event.target );
+            flickity.select( index );
+        });
+
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │                               Progress Bar                              │
+        *   └─────────────────────────────────────────────────────────────────────────┘ */
+        function runProgressBar(index,duration) {
+            resetAllProgressBars();
+            duration = duration;
+            progress = buttons[index].querySelector('.progress');
+            progress.style.animationDuration = duration+'s'; // s for seconds
+            progress.style.animationPlayState = "running";
+        }
+
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │                          Reset ALL Progress Bar                         │
+        *   └─────────────────────────────────────────────────────────────────────────┘ */
+        function resetAllProgressBars() {
+            var progressbars = buttonGroup.querySelectorAll('.progress');
+            progressbars = fizzyUIUtils.makeArray( progressbars );
+
+            for(let i = 0;i < progressbars.length; i++){
+                progressbars[i].style.animation = 'none';
+                progressbars[i].offsetHeight; /* trigger reflow */
+                progressbars[i].style.animation = null; 
+            }
         }
 
 
-
-    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
-    *   │                                                                         │░
-    *   │                           CONTROLLER CAROUSEL.                          │░
-    *   │                        (after flickity declared).                       │░
-    *   │                                                                         │░
-    *   └─────────────────────────────────────────────────────────────────────────┘░
-    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    */
-
-    buttonGroup.addEventListener( 'click', function( event ) {
-        var index = buttons.indexOf( event.target );
-        flickity.select( index );
-    });
-
-
-
-
-    function runProgressBar(index,duration=10) {
-        resetAllProgressBars();
-        progress = buttons[index].querySelector('.progress');
-        progress.style.animationPlayState = "running";
-        progress.style.animationDuration = duration+'s';
-    }
-
-
-    function resetAllProgressBars() {
-        var progressbars = buttonGroup.querySelectorAll('.progress');
-        progressbars = fizzyUIUtils.makeArray( progressbars );
-
-        for(let i = 0;i < progressbars.length; i++){
-            progressbars[i].style.animation = 'none';
-            progressbars[i].offsetHeight; /* trigger reflow */
-            progressbars[i].style.animation = null; 
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │                               Play video                                │
+        *   └─────────────────────────────────────────────────────────────────────────┘ */
+        function playVideo(index) {
+            videos[index].play();
+            videos[index].style.objectFit = "cover";
         }
-    }
 
+
+        /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+        *   │                          Sleep function utility                         │
+        *   └─────────────────────────────────────────────────────────────────────────┘ */
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
 }());

@@ -56,7 +56,6 @@
     width: 0%;
     height: 100%;
     overflow: hidden;
-    background: #111111;
     animation: animate-progress;
     animation-duration: 10s;
     z-index: 0;

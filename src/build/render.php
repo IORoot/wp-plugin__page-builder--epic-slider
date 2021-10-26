@@ -4,7 +4,13 @@ namespace andyp\pagebuilder\epicslider\build;
 
 class render
 {
-        
+    private $config;
+
+    public function __construct($config){
+        $this->config = $config;
+    }
+
+
     /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
     *   │                                                                         │░
     *   │                         The complete wrapper                            │░
@@ -14,7 +20,7 @@ class render
     */
 
     public function open_epicslider(){
-        return '<div class="epicslider">';
+        return '<div class="'.$this->config['wrapper_classes'].'">';
     }
 
     public function close_epicslider(){
@@ -30,7 +36,7 @@ class render
     */
 
     public function open_carousel(){
-        return '<div class="carousel flex gap-x-4 m-4">';
+        return '<div class="'.$this->config['carousel_classes'].'">';
     }
 
     public function close_carousel(){
@@ -46,7 +52,7 @@ class render
     */
 
     public function open_flickity_main(){
-        return '<div class="w-full h-192" id="flickity-main" data-flickity>';
+        return '<div id="flickity-main" class="'.$this->config["flickity_main_classes"].'" data-flickity>';
     }
 
     public function close_flickity_main(){
@@ -63,7 +69,7 @@ class render
     */
 
     public function open_carousel_cell(){
-        return '<div class="carousel-cell w-full h-192"><div class="relative z-0 h-192 bg-smoke">';
+        return '<div class="'.$this->config["carousel_cell_outer_classes"].'"><div class="'.$this->config["carousel_cell_inner_classes"].'">';
     }
 
     public function close_carousel_cell(){
@@ -80,7 +86,7 @@ class render
     */
 
     public function open_flickity_control(){
-        return '<div class="hidden md:flex w-1/5 h-192 gap-4 flex-col" id="flickity-control">';
+        return '<div id="flickity-control" class="'.$this->config["flickity_control_classes"].'">';
     }
 
     public function close_flickity_control(){
@@ -96,7 +102,7 @@ class render
     */
 
     public function open_nav_item(){
-        return '<div class="nav-item p-4 overflow-hidden rounded cursor-pointer relative flex-grow bg-mist hover:bg-smoke z-0">';
+        return '<div class="'.$this->config["nav_item_classes"].'">';
     }
 
     public function close_nav_item(){
@@ -113,7 +119,7 @@ class render
     */
 
     public function open_nav_item_content(){
-        return '<div class="item-content pointer-events-none flex items-center h-full gap-4">';
+        return '<div class="'.$this->config["item_content_classes"].'">';
     }
 
     public function close_nav_item_content(){
@@ -130,7 +136,7 @@ class render
     */
 
     public function item_image(string $image){
-        return '<img class="rounded w-1/3 object-cover h-full z-10 relative pointer-events-none hidden lg:block" src="'.$image.'"></img>';
+        return '<img class="'.$this->config["image_classes"].'" src="'.$image.'"></img>';
     }    
 
 
@@ -140,10 +146,22 @@ class render
     *   │                                                                         │░
     *   └─────────────────────────────────────────────────────────────────────────┘░
     *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    */
+    */  
 
     public function item_title(string $title){
-        return '<h3 class="relative z-10 font-normal text-lg">'.$title.'</h3>';
+        return '<div class="'.$this->config["title_classes"].'">'.$title.'</div>';
+    }
+
+
+    /*  ┌─────────────────────────────────────────────────────────────────────────┐ 
+    *   │                                                                         │░
+    *   │                       (optional) Item Button.                           │░
+    *   │                     Will replace image and title                        │░
+    *   └─────────────────────────────────────────────────────────────────────────┘░
+    *    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    */
+    public function item_button(string $subtitle){
+        return $subtitle;
     }
 
 
@@ -156,7 +174,7 @@ class render
     */
 
     public function progress_bar(){
-        return '<div class="progress"></div>';
+        return '<div class="'.$this->config["progress_bar_classes"].'"></div>';
     }
 
 }

@@ -14,11 +14,6 @@ class init {
     
     private $result;
 
-
-    public function __construct(){
-        $this->render = new render();
-    }
-
     public function set_config($config){
         $this->config = $config;
     }
@@ -28,6 +23,7 @@ class init {
     }
 
     public function run(){
+        $this->render = new render($this->config);
         $this->create_content();
     }
 
@@ -176,9 +172,15 @@ class init {
 
             $content .= $this->render->open_nav_item_content();
 
-            $content .= $this->render->item_image($image);
+            if (isset($loop_post["meta"]["epicslider_button"][0])){
+                $content .= $this->render->item_button($loop_post["meta"]["epicslider_button"][0]);
+            } else {
 
-            $content .= $this->render->item_title($title);
+                $content .= $this->render->item_image($image);
+
+                $content .= $this->render->item_title($title);
+                
+            }
 
             $content .= $this->render->close_nav_item_content();
 
