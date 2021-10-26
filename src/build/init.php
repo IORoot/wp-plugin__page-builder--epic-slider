@@ -204,11 +204,12 @@ class init {
     */
     private function css_stylesheet()
     {   
-        if ($this->config["load_flickity_style"]){
-            $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.css">';
-        }
-        if ($this->config["load_epicslider_style"]){
+
+        if ($this->config["load_epicslider_css"]){
             $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/epicslider.css">';
+        }
+        if ($this->config["load_flickity_css"]){
+            $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.css">';
         }
     }
 
