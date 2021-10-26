@@ -11,3 +11,9 @@ This is a version seen on the https://www.epicgames.com/store/en-US/ homepage.
 
 # Dependencies
 - MetaFizzy Flickity
+
+# Changelog
+
+0.2 - LondonParkour version. Added 3sec intros.
+
+0.1 - ParkourLabs initial version
