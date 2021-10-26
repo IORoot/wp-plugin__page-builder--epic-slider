@@ -204,8 +204,12 @@ class init {
     */
     private function css_stylesheet()
     {   
-        $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/epicslider.css">';
-        $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.css">';
+        if ($this->config["load_flickity_style"]){
+            $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.css">';
+        }
+        if ($this->config["load_epicslider_style"]){
+            $this->result .= '<link rel="stylesheet" href="'.ANDYP_EPICSLIDER_URL . 'src/assets/epicslider.css">';
+        }
     }
 
     private function add_css()
@@ -223,8 +227,13 @@ class init {
     */
     private function js_script()
     {
-        $this->result .= '<script src="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.js"></script>';
-        $this->result .= '<script src="'.ANDYP_EPICSLIDER_URL . 'src/assets/epicslider.js"></script>';
+        if ($this->config["load_flickity_js"]){
+            $this->result .= '<script src="'.ANDYP_EPICSLIDER_URL . 'src/assets/flickity.min.js"></script>';
+        }
+        if ($this->config["load_epicslider_js"]){
+            $this->result .= '<script src="'.ANDYP_EPICSLIDER_URL . 'src/assets/epicslider.js"></script>';
+        }      
+        
     }
 
 
