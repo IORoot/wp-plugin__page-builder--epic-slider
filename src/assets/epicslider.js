@@ -46,7 +46,8 @@
                     wrapAround:true,
                     autoPlay:false,
                     pageDots: true,
-                    adaptiveHeight: false,
+                    adaptiveHeight: true,
+                    setGallerySize: false,
                     fade: true,
                     on: {
                         ready: function() {
@@ -193,5 +194,4 @@
                 function sleep(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));
                 }
-
 }());
