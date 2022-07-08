@@ -14,6 +14,22 @@
 
 ##  1. <a name='TableofContents'></a>Table of Contents
 
+* 1. [Table of Contents](#TableofContents)
+* 2. [About The Project](#AboutTheProject)
+	* 2.1. [Built With](#BuiltWith)
+	* 2.2. [Installation](#Installation)
+* 3. [Usage](#Usage)
+	* 3.1. [Hero Slider](#HeroSlider)
+	* 3.2. [Navigation](#Navigation)
+	* 3.3. [WP_Query](#WP_Query)
+	* 3.4. [Additional CSS](#AdditionalCSS)
+	* 3.5. [Additional Javascript](#AdditionalJavascript)
+* 4. [Customising](#Customising)
+* 5. [Troubleshooting](#Troubleshooting)
+* 6. [Contributing](#Contributing)
+* 7. [License](#License)
+* 8. [Contact](#Contact)
+* 9. [Changelog](#Changelog)
 
 
 ##  2. <a name='AboutTheProject'></a>About The Project
@@ -31,7 +47,7 @@ Parts include:
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-###  2.2. <a name='BuiltWith'></a>Built With
+###  2.1. <a name='BuiltWith'></a>Built With
 
 This project was built with the following frameworks, technologies and software.
 
@@ -44,7 +60,7 @@ This project was built with the following frameworks, technologies and software.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-###  2.3. <a name='Installation'></a>Installation
+###  2.2. <a name='Installation'></a>Installation
 
 
 These are the steps to get up and running with this plugin.
@@ -66,32 +82,32 @@ The Epic Slider will now be available through the page-builder as an "organism" 
 
 It has five tabs:
 
-### Hero Slider
+###  3.1. <a name='HeroSlider'></a>Hero Slider
 
 This is where you control the classes for the main window slider. 
 
 ![https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/hero-slider.png?raw=true](https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/hero-slider.png?raw=true)
 
-### Navigation
+###  3.2. <a name='Navigation'></a>Navigation
 
 Control the classes applied to the sidemenu.
 
 ![https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/navigation.png?raw=true](https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/navigation.png?raw=true)
 
-### WP_Query
+###  3.3. <a name='WP_Query'></a>WP_Query
 
 Specify which posts will be used as content.
 
 ![https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/wp_query.png?raw=true](https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/wp_query.png?raw=true)
 
-### Additional CSS
+###  3.4. <a name='AdditionalCSS'></a>Additional CSS
 
 Add an inline style tag to add any additional CSS.
 
 ![https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/css.png?raw=true](https://github.com/IORoot/wp-plugin__page-builder--epic-slider/blob/master/files/css.png?raw=true)
 
 
-### Additional Javascript
+###  3.5. <a name='AdditionalJavascript'></a>Additional Javascript
 
 Add any javascript you wish to add to the page.
 
